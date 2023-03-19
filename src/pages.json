@@ -12,6 +12,9 @@
 		},
 		{
 			"path": "pages/mine/index"
+		},
+		{
+			"path": "pages/detail/index"
 		}
 	],
 	"tabBar": {
@@ -38,6 +41,10 @@
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "",
 		"navigationBarBackgroundColor": "#F8F8F8",
-		"backgroundColor": "#F8F8F8"
+		"backgroundColor": "#F8F8F8",
+		"app-plus": {
+			"bounce": "none",
+			"scrollIndicator": "none"
+		}
 	}
 }
