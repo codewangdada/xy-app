@@ -5,7 +5,7 @@ import type { IResponse } from './type'
 type RequestOptionsMethod = 'GET' | 'POST'
 
 // 白名单，不需要携带token就允许被访问的接口
-const whiteApiList = ['/lkd/books/bk-book/getbook/1/10', '/api/login', '/api/register/verify', '/api/register/reset']
+const whiteApiList = ['/goods/list', '/api/login', '/api/register/verify', '/api/register/reset']
 
 const token = ''
 

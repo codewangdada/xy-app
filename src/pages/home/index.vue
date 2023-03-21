@@ -24,67 +24,114 @@
 					最新发布
 				</view>
 			</view>
-			<view class="recommend-container">
-				<view class="recommend-item" v-for="item in 7" @click="goDetail">
-					<a class="recommend-img-wrapper">
-						<image class="recommend-img" src="../../static/logo.png"></image>
-					</a>
-					<a class="recommend-info">
-						<view class="recommend-title">
-							<text class="recommend-title-p">
-								好侍咖王咖喱咖哩咖喱块中辣3号90ghouse块状咖喱调味料调料
-							</text>
-						</view>
-						<view class="recommend-price-box">
-							<text class="recommend-sign">
-								￥
-							</text>
-							<text class="recommend-price">
-								13.8
-							</text>
-							<text class="recommend-payed">
-								180人想要
-							</text>
-						</view>
-						<view class="recommend-person-box">
-							<image src="../../static/logo.png" class="recommend-avatar"></image>
-							<text class="recommend-address">
-								杭州
-							</text>
-							<text class="recommend-credit">
-								芝麻信用极好
-							</text>
-						</view>
-					</a>
-				</view>
-			</view>
+			<waterfall v-model="listData" ref="mWaterfall">
+				<template #left={leftList}>
+					<view class="recommend-item" v-for="item in leftList" @click="del(item.id)">
+						<a class="recommend-img-wrapper">
+							<image class="recommend-img" mode="widthFix" :src="item.img"></image>
+						</a>
+						<a class="recommend-info">
+							<view class="recommend-title">
+								<text class="recommend-title-p">
+									{{item.introduce}}
+								</text>
+							</view>
+							<view class="recommend-price-box">
+								<text class="recommend-sign">
+									￥
+								</text>
+								<text class="recommend-price">
+									{{item.price}}
+								</text>
+								<text class="recommend-payed">
+									{{item.want}}人想要
+								</text>
+							</view>
+							<view class="recommend-person-box">
+								<image src="../../static/image/avatar.jpg" class="recommend-avatar">
+								</image>
+								<view class="recommend-address">
+									{{item.user_address}}
+								</view>
+								<view class="recommend-credit">
+									芝麻信用极好
+								</view>
+							</view>
+						</a>
+					</view>
+				</template>
+				<template #right={rightList}>
+					<view class="recommend-item" v-for="item in rightList" @click="goDetail">
+						<a class="recommend-img-wrapper">
+							<image class="recommend-img" mode="widthFix" :src="item.img"></image>
+						</a>
+						<a class="recommend-info">
+							<view class="recommend-title">
+								<text class="recommend-title-p">
+									{{item.introduce}}
+								</text>
+							</view>
+							<view class="recommend-price-box">
+								<text class="recommend-sign">
+									￥
+								</text>
+								<text class="recommend-price">
+									{{item.price}}
+								</text>
+								<text class="recommend-payed">
+									{{item.want}}人想要
+								</text>
+							</view>
+							<view class="recommend-person-box">
+								<image src="../../static/image/avatar.jpg" class="recommend-avatar">
+								</image>
+								<view class="recommend-address">
+									{{item.user_address}}
+								</view>
+								<view class="recommend-credit">
+									芝麻信用极好
+								</view>
+							</view>
+						</a>
+					</view>
+				</template>
+			</waterfall>
 		</view>
 	</view>
 </template>
 
 <script setup lang="ts">
+	import waterfall from '@/components/waterfall/index.vue'
 	import {
-		ref
+		reactive,
+		ref,
+		getCurrentInstance
 	} from "vue";
 	import {
-		fetchUserList
-	} from "@/api/user";
+		getGoodsList
+	} from "@/api/goods";
 	import type {
-		IUserInfo
+		IGoodsInfo
 	} from "@/api/type";
 	import {
 		useCounterStore
 	} from '@/stores/counter'
 	import {
+		onReachBottom,
 		onReady
 	} from "@dcloudio/uni-app";
-	
-	const listData = ref < IUserInfo[] > ([])
+
+	const listData = ref < IGoodsInfo[] > ([])
 	const count = ref < number > (0)
 	const counter = useCounterStore()
-	
+
 	const topH = ref < number > (0)
-	
+
+	const params = reactive({
+		currentPage: 1,
+		pageSize: 10
+	})
+
 	onReady(() => {
 		uni.getSystemInfo({
 			success(res) {
@@ -95,39 +142,55 @@
 			}
 		})
 	})
-	
+
+	onReachBottom(() => {
+		if (listData.value.length < count.value) {
+			params.currentPage++
+			getList()
+		} else {
+			uni.showToast({
+				title: '无了！',
+				duration: 2000,
+				icon:'none'
+			});
+		}
+	})
+
 	function goTop() {
 		uni.pageScrollTo({
-			scrollTop:topH.value,
-			duration:100
+			scrollTop: topH.value,
+			duration: 100
 		})
 	}
-	
+
 	function goDetail() {
 		uni.navigateTo({
-			url:'/pages/detail/index'
+			url: '/pages/detail/index'
 		})
 	}
-	
+
+	const mWaterfall = ref()
+	console.log(mWaterfall.remove)
+
 	function add() {
 		counter.increment();
 	}
-	
+
 	getList();
 	async function getList() {
 		const {
 			data
-		} = await fetchUserList({
-			currentPage: 1,
-			pageSize: 2,
+		} = await getGoodsList({
+			currentPage: params.currentPage,
+			pageSize: params.pageSize,
 		})
 		const {
 			records,
 			total
 		} = data
-		listData.value = records
+		listData.value = listData.value.concat(records)
 		count.value = total
-	
+
 	}
 </script>
 
@@ -223,97 +286,91 @@
 				}
 			}
 
-			.recommend-container {
-				display: flex;
+
+
+			.recommend-item {
 				position: relative;
+				// width: 50%;
 				box-sizing: border-box;
-				overflow: hidden;
-				flex-wrap: wrap;
-				padding: 0 20rpx;
+				display: flex;
+				flex-direction: column;
+				background: #fff;
+				padding: 0 20rpx 40rpx;
 
-				.recommend-item {
-					position: relative;
-					width: 50%;
-					box-sizing: border-box;
-					display: flex;
-					flex-direction: column;
-					background: #fff;
-					padding: 0 20rpx 40rpx;
+				.recommend-img-wrapper {
 
-					.recommend-img-wrapper {
-						height: 340rpx;
-						align-items: center;
-						justify-content: center;
+					.recommend-img {
+						width: 100%;
 
-						.recommend-img {
-							width: 100%;
-							height: 100%;
+					}
+				}
+
+				.recommend-info {
+					text-decoration: none;
+
+					.recommend-title {
+						margin-top: 24rpx;
+						height: 76rpx;
+						position: relative;
+						line-height: 38rpx;
+						overflow: hidden;
+						text-overflow: ellipsis;
+						min-height: 0;
+
+						.recommend-title-p {
+							font-size: 26rpx;
+							color: #333;
 						}
 					}
 
-					.recommend-info {
-						text-decoration: none;
+					.recommend-price-box {
+						margin-top: 22rpx;
+						height: 40rpx;
+						line-height: 40rpx;
 
-						.recommend-title {
-							margin-top: 24rpx;
-							height: 76rpx;
-							position: relative;
-							line-height: 38rpx;
-							overflow: hidden;
-							text-overflow: ellipsis;
-							min-height: 0;
-
-							.recommend-title-p {
-								font-size: 26rpx;
-								color: #333;
-							}
+						.recommend-sign {
+							font-size: 24rpx;
+							color: #ff5500
 						}
 
-						.recommend-price-box {
-							margin-top: 22rpx;
-							height: 40rpx;
-							line-height: 40rpx;
-
-							.recommend-sign {
-								font-size: 24rpx;
-								color: #ff5500
-							}
-
-							.recommend-price {
-								font-size: 28rpx;
-								line-height: 32rpx;
-								color: #ff5500
-							}
-
-							.recommend-payed {
-								font-size: 24rpx;
-								color: #999;
-								margin-top: 4rpx;
-							}
+						.recommend-price {
+							font-size: 28rpx;
+							line-height: 32rpx;
+							color: #ff5500;
+							margin-left: -14rpx;
 						}
 
-						.recommend-person-box {
-							display: flex;
-							align-items: center;
-							margin-top: 20rpx;
-							.recommend-avatar{
-								width: 40rpx;
-								height: 40rpx;
-								border-radius: 20rpx;
-							}
-							.recommend-address{
-								flex: 1;
-								font-size: 28rpx;
-								margin-left: 10rpx;
-								color: rgb(168,168,168);
-							}
-							.recommend-credit{
-								background:rgb(244,244,252);
-								color: blue;
-								border-radius: 40rpx;
-								padding: 10rpx 20rpx;
-								font-size: 24rpx;
-							}
+						.recommend-payed {
+							font-size: 24rpx;
+							color: #999;
+							margin-top: 4rpx;
+						}
+					}
+
+					.recommend-person-box {
+						display: flex;
+						align-items: center;
+						margin-top: 20rpx;
+
+						.recommend-avatar {
+							width: 20px;
+							height: 20px;
+							border-radius: 10px;
+						}
+
+						.recommend-address {
+							flex: 1;
+							font-size: 28rpx;
+							margin-left: 10rpx;
+							color: rgb(168, 168, 168);
+						}
+
+						.recommend-credit {
+							background: rgb(244, 244, 252);
+							color: blue;
+							border-radius: 40rpx;
+							padding: 10rpx 20rpx;
+							font-size: 24rpx;
 						}
 					}
 				}

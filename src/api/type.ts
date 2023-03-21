@@ -8,8 +8,13 @@ export interface BaseList<T> {
   total: number
 }
 
-export interface IUserInfo {
-    bookName: string,
-    bookAuthor: string
+export interface IGoodsInfo {
+	id: number,
+    img: string,
+    introduce: string,
+	price: string,
+	old_price: string,
+	want: number,
+	user_address: string
 }
 
