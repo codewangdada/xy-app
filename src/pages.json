@@ -8,7 +8,17 @@
 	},
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		{
-			"path": "pages/home/index"
+			"path": "pages/home/index",
+			"style": {
+				"enablePullDownRefresh": true,
+				"onReachBottomDistance": 0
+			}
+		},
+		{
+			"path": "pages/play/index"
+		},
+		{
+			"path": "pages/message/index"
 		},
 		{
 			"path": "pages/mine/index"
@@ -20,7 +30,6 @@
 	"tabBar": {
 		"color": "#cdcdcd",
 		"selectedColor": "#2c2c2c",
-		"borderStyle": "#d4237a",
 		"list": [
 			{
 				"pagePath": "pages/home/index",
@@ -29,9 +38,21 @@
 				"text": "首页"
 			},
 			{
+				"pagePath": "pages/play/index",
+				"iconPath": "static/image/icon_play.png",
+				"selectedIconPath": "static/image/icon_play_HL.png",
+				"text": "会玩"
+			},
+			{
+				"pagePath": "pages/message/index",
+				"iconPath": "static/image/icon_msg.png",
+				"selectedIconPath": "static/image/icon_msg_HL.png",
+				"text": "消息"
+			},
+			{
 				"pagePath": "pages/mine/index",
-				"iconPath": "static/image/icon_home.png",
-				"selectedIconPath": "static/image/ic_home_HL.png",
+				"iconPath": "static/image/icon_mine.png",
+				"selectedIconPath": "static/image/icon_mine_HL.png",
 				"text": "我的"
 			}
 		]

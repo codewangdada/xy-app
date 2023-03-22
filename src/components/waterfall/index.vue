@@ -16,6 +16,9 @@
 		computed,
 		watch
 	} from 'vue';
+	defineExpose({
+		clear
+	})
 	const emit = defineEmits(['update:modelValue'])
 	const props = defineProps({
 		modelValue: {
@@ -161,9 +164,12 @@
 	.waterfall {
 		display: flex;
 		padding: 0 20rpx;
+		flex-direction: row;
+		align-items: flex-start;
 
 		.column {
-			width: 50%;
+			flex: 1;
 		}
+
 	}
 </style>

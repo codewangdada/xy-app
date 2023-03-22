@@ -1,6 +1,6 @@
 export default {
-    HEADER: '',
-    HEADERPARAMS: '',
-    TOKENNAME: '',
-    HTTP_REQUEST_URL: '/api'
+	HEADER: '',
+	HEADERPARAMS: '',
+	TOKENNAME: '',
+	HTTP_REQUEST_URL: 'http://www.bigmoon.site:8080'
 }

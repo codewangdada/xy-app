@@ -39,10 +39,14 @@
 				<image src="../../static/logo.png" class="userinfo-avatar"></image>
 				<view class="userinfo-box">
 					<view class="userinfo-name">
-						<text>小董</text><text class="tag">百次好评</text>
+						<text>{{detail.user_name}}</text><text class="tag">百次好评</text>
 					</view>
 					<view class="userinfo-time">
-						<text>2分钟前来过</text>|<text>济南</text>
+						<text>2分钟前来过</text>
+						<view class="middle-line">
+							|
+						</view>
+						<text>{{detail.user_address}}</text>
 					</view>
 				</view>
 				<view class="userinfo-attention">
@@ -54,10 +58,10 @@
 					￥
 				</view>
 				<view class="price-new">
-					36.98
+					{{detail.price}}
 				</view>
-				<view class="small-text">
-					￥100
+				<view class="small-text delete-line">
+					￥{{detail.old_price}}
 				</view>
 				<view class="middle-line">
 					|
@@ -66,50 +70,103 @@
 					包邮
 				</view>
 				<view class="small-text">
-					179人想要
+					{{detail.want}}人想要
 				</view>
 				<view class="middle-line">
 					|
 				</view>
 				<view class="small-text">
-					581浏览
+					{{detail.look}}浏览
 				</view>
 			</view>
-			<view class="content-wrapper">
-				15分钟内到账<br>
-				优酷vip黄金会员一年优酷youku视频会员12个月直冲<br>
-				充值到账12个月。15分钟内到账<br>
-				直冲您的账号，拍下后提供手机号给客服，需要配合接验证码，一次性到账，正规充值，<br>
-				1.直冲一次性到账，非共享账号，充值您的手机号<br>
-				2.支持手机，平板，电脑通用，充值速度快<br>
-				3.充值成功后，无法退款，请确认好充值账号，有问题可以私聊客服<br>
+			<view class="content-wrapper" v-html="detail.introduce">
 			</view>
+			<view class="image-wrapper" @click="handlePreview(detail.img)">
+				<image class="image" :src="detail.img" mode="widthFix"></image>
+			</view>
+
 			<view class="line">
-				
+
 			</view>
 		</view>
 	</view>
 </template>
 
 <script setup lang="ts">
+	import {
+		getGoodsDetail
+	} from "@/api/goods";
+	import {
+		reactive,
+		toRefs
+	} from "vue";
+	import type {
+		IGoodsInfo
+	} from '@/api/type'
+	import {
+		onLoad
+	} from "@dcloudio/uni-app";
+
+	interface IData {
+		detail: IGoodsInfo,
+	}
+
+	const data = reactive < IData > ({
+		detail: {}
+	})
+
+	const {
+		detail
+	} = toRefs(data)
+
+
+
+
+	async function getDetail(id: number) {
+		const {
+			data
+		} = await getGoodsDetail({
+			id
+		})
+		detail.value = data
+	}
+
 	function goBack() {
 		uni.navigateBack({
 			delta: 1
 		});
 	}
+
+	function handlePreview(img: string) {
+		uni.previewImage({
+			urls: [img]
+		})
+	}
+
+	onLoad(({
+		id
+	}) => {
+		getDetail(id)
+	})
 </script>
 
 <style lang="scss" scoped>
-	.icon{
+	.icon {
 		width: 50rpx;
 		height: 50rpx;
 	}
-	.icon-small{
+
+	.icon-small {
 		width: 40rpx;
 		height: 40rpx;
 	}
+
+	.delete-line {
+		text-decoration: line-through;
+	}
+
 	.page-container {
-		padding-top: 80px;
+		padding: 80px 0;
 		width: 100%;
 		display: flex;
 		justify-content: center;
@@ -117,18 +174,22 @@
 		.main-wrapper {
 			width: 100%;
 			position: relative;
-			.topbar-wrapper{
+
+			.topbar-wrapper {
 				width: 100%;
 				height: 80px;
 				box-sizing: border-box;
 				display: flex;
 				justify-content: space-between;
+				background-color: #fff;
 				align-items: center;
+				z-index: 101;
 				position: fixed;
 				top: 0;
 				left: 0;
 				padding: 80rpx 20rpx 10rpx;
-				.topbar-search{
+
+				.topbar-search {
 					flex: 1;
 					background-color: #eee;
 					color: #999;
@@ -136,55 +197,67 @@
 					padding: 10rpx 20rpx;
 					border-radius: 30rpx;
 				}
-				.topbar-share{
+
+				.topbar-share {
 					margin-right: 20rpx;
 				}
 			}
-			.footer-wrapper{
+
+			.footer-wrapper {
 				position: fixed;
 				width: 100%;
 				bottom: 0;
 				left: 0;
+				background-color: #fff;
 				border-top: 1px solid #eee;
 				display: flex;
+				z-index: 101;
 				align-items: center;
 				justify-content: space-between;
 				padding: 20rpx 40rpx;
 				box-sizing: border-box;
-				.footer-icon{
+
+				.footer-icon {
 					text-align: center;
 					color: #999;
 					font-size: 20rpx;
 					margin-right: 40rpx;
 				}
-				.footer-btn{
+
+				.footer-btn {
 					background-color: rgb(255, 231, 17);
 					border-radius: 60rpx;
 					padding: 20rpx 40rpx;
 				}
-				.btn{
+
+				.btn {
 					margin-left: auto;
 					margin-right: 20rpx;
 					background-color: #eee;
 				}
 			}
-			.userinfo-wrapper{
+
+			.userinfo-wrapper {
 				padding: 40rpx;
 				display: flex;
 				justify-content: space-between;
 				align-items: center;
-				.userinfo-avatar{
+
+				.userinfo-avatar {
 					width: 80rpx;
 					height: 80rpx;
 					border-radius: 40rpx;
 				}
-				.userinfo-box{
+
+				.userinfo-box {
 					margin-left: 20rpx;
 					flex: 1;
-					.userinfo-name{
+
+					.userinfo-name {
 						font-weight: bold;
 						font-size: 28rpx;
-						.tag{
+
+						.tag {
 							color: orange;
 							font-size: 24rpx;
 							margin-left: 10rpx;
@@ -193,51 +266,77 @@
 							border-radius: 20rpx;
 						}
 					}
-					.userinfo-time{
+
+					.userinfo-time {
 						color: #666;
 						margin-top: 10rpx;
 						font-size: 24rpx;
+						display: flex;
+
+						.middle-line {
+							color: #eee;
+							font-size: 24rpx;
+							margin: 0 10rpx;
+						}
 					}
 				}
-				.userinfo-attention{
+
+				.userinfo-attention {
 					font-weight: bold;
 					background-color: #eee;
 					border-radius: 50rpx;
 					padding: 10rpx 20rpx;
 				}
 			}
-			.price-wrapper{
+
+			.price-wrapper {
 				display: flex;
 				align-items: baseline;
 				padding: 40rpx;
-				.price{
+
+				.price {
 					color: #ff5500
 				}
-				.price-new{
+
+				.price-new {
 					font-size: 40rpx;
 					font-weight: bold;
 					color: #ff5500
 				}
-				.small-text{
+
+				.small-text {
 					color: #666;
 					font-size: 24rpx;
-					
+
 				}
-				.express{ 
+
+				.express {
 					color: royalblue;
 					font-size: 28rpx;
 					flex: 1;
 				}
-				.middle-line{
+
+				.middle-line {
 					color: #eee;
 					font-size: 24rpx;
 					margin: 0 10rpx;
 				}
 			}
-			.content-wrapper{
+
+			.content-wrapper {
 				padding: 40rpx;
 			}
-			.line{
+
+			.image-wrapper {
+				padding: 40rpx;
+
+				.image {
+					width: 100%;
+					border-radius: 20rpx;
+				}
+			}
+
+			.line {
 				width: 100%;
 				height: 20rpx;
 				background-color: #eee;

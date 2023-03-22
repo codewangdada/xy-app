@@ -4,5 +4,9 @@ import type { IPage, IGoodsInfo, BaseList } from './type'
 
 
 export function getGoodsList(data?: IPage) {
-  return get<BaseList<IGoodsInfo>>('/goods/list', data)
+	return get<BaseList<IGoodsInfo>>('/goods/list', data)
+}
+
+export function getGoodsDetail(data: any) {
+	return get<IGoodsInfo>('/goods/getGoodsById', data)
 }

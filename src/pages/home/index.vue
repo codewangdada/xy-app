@@ -8,7 +8,7 @@
 
 					</view>
 					<view class="header-search__text">
-						{{topH}}
+
 					</view>
 					<view class="header-search__btn">搜索</view>
 				</view>
@@ -26,7 +26,7 @@
 			</view>
 			<waterfall v-model="listData" ref="mWaterfall">
 				<template #left={leftList}>
-					<view class="recommend-item" v-for="item in leftList" @click="del(item.id)">
+					<view class="recommend-item" v-for="item in leftList" @click="goDetail(item.id)">
 						<a class="recommend-img-wrapper">
 							<image class="recommend-img" mode="widthFix" :src="item.img"></image>
 						</a>
@@ -61,7 +61,7 @@
 					</view>
 				</template>
 				<template #right={rightList}>
-					<view class="recommend-item" v-for="item in rightList" @click="goDetail">
+					<view class="recommend-item" v-for="item in rightList" @click="goDetail(item.id)">
 						<a class="recommend-img-wrapper">
 							<image class="recommend-img" mode="widthFix" :src="item.img"></image>
 						</a>
@@ -96,6 +96,7 @@
 					</view>
 				</template>
 			</waterfall>
+			<uni-load-more :status="loadingStatus"></uni-load-more>
 		</view>
 	</view>
 </template>
@@ -104,8 +105,7 @@
 	import waterfall from '@/components/waterfall/index.vue'
 	import {
 		reactive,
-		ref,
-		getCurrentInstance
+		ref
 	} from "vue";
 	import {
 		getGoodsList
@@ -114,23 +114,22 @@
 		IGoodsInfo
 	} from "@/api/type";
 	import {
-		useCounterStore
-	} from '@/stores/counter'
-	import {
+		onLoad,
+		onPullDownRefresh,
 		onReachBottom,
 		onReady
 	} from "@dcloudio/uni-app";
 
 	const listData = ref < IGoodsInfo[] > ([])
 	const count = ref < number > (0)
-	const counter = useCounterStore()
-
 	const topH = ref < number > (0)
-
 	const params = reactive({
 		currentPage: 1,
-		pageSize: 10
+		pageSize: 4
 	})
+	const mWaterfall = ref()
+
+	const loadingStatus = ref('loading')
 
 	onReady(() => {
 		uni.getSystemInfo({
@@ -143,16 +142,30 @@
 		})
 	})
 
+	onLoad(() => {
+		uni.startPullDownRefresh({
+			success: () => {
+				uni.showToast({
+					icon: 'none',
+					title: '^v^'
+				})
+			}
+		});
+	})
+
+	onPullDownRefresh(() => {
+		params.currentPage = 1
+		mWaterfall.value.clear()
+		getList()
+		uni.stopPullDownRefresh()
+	})
+
 	onReachBottom(() => {
 		if (listData.value.length < count.value) {
 			params.currentPage++
 			getList()
 		} else {
-			uni.showToast({
-				title: '无了！',
-				duration: 2000,
-				icon:'none'
-			});
+			loadingStatus.value = 'noMore'
 		}
 	})
 
@@ -163,21 +176,14 @@
 		})
 	}
 
-	function goDetail() {
+	function goDetail(id: number) {
 		uni.navigateTo({
-			url: '/pages/detail/index'
+			url: `/pages/detail/index?id=${id}`
 		})
 	}
 
-	const mWaterfall = ref()
-	console.log(mWaterfall.remove)
-
-	function add() {
-		counter.increment();
-	}
-
-	getList();
 	async function getList() {
+		loadingStatus.value = 'loading'
 		const {
 			data
 		} = await getGoodsList({
@@ -188,9 +194,9 @@
 			records,
 			total
 		} = data
+		loadingStatus.value = 'more'
 		listData.value = listData.value.concat(records)
 		count.value = total
-
 	}
 </script>
 
@@ -199,6 +205,7 @@
 
 	.page-container {
 		padding-top: 120px;
+		// padding-bottom: 50px;
 		width: 100%;
 		display: flex;
 		justify-content: center;
@@ -343,7 +350,7 @@
 						.recommend-payed {
 							font-size: 24rpx;
 							color: #999;
-							margin-top: 4rpx;
+							margin-left: 10rpx;
 						}
 					}
 

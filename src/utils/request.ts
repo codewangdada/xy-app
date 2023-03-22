@@ -5,7 +5,7 @@ import type { IResponse } from './type'
 type RequestOptionsMethod = 'GET' | 'POST'
 
 // 白名单，不需要携带token就允许被访问的接口
-const whiteApiList = ['/goods/list', '/api/login', '/api/register/verify', '/api/register/reset']
+const whiteApiList = ['/goods/list', '/goods/getGoodsById', '/user/getUserInfo']
 
 const token = ''
 
@@ -17,14 +17,14 @@ export const interceptor = () => {
 		invoke(args) {
 
 			// 加载loading
-			uni.showLoading({
-				title: '加载中...'
-			})
+			// uni.showLoading({
+			// 	title: '加载中...'
+			// })
 
 			// 当本地没有token，并且接口地址没在白名单内，一律跳转登录页面
 			if (!token && !whiteApiList.includes(args.url)) {
 				console.log('去登录页');
-				uni.hideLoading()
+				// uni.hideLoading()
 				return false
 			}
 			// request 触发前拼接 url
@@ -39,16 +39,16 @@ export const interceptor = () => {
 
 		// 响应拦截器，可以对数据进行预处理
 		success(args) {
-			uni.hideLoading()
+			// uni.hideLoading()
 
 		},
 		fail(err) {
 			console.log('interceptor-fail', err)
 			console.log('请求失败')
-			uni.hideLoading()
+			// uni.hideLoading()
 		},
 		complete(res) {
-			uni.hideLoading()
+			// uni.hideLoading()
 		}
 	})
 }
