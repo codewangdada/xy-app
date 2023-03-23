@@ -20,7 +20,7 @@ export interface IGoodsInfo {
 
 export interface IUserInfo {
 	id?: number,
-	user_name?: string,
+	nick_name?: string,
 	vip_name?: string,
 	avatar?: string,
 	collect_num?: number,

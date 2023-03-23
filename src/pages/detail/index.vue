@@ -36,17 +36,17 @@
 				</view>
 			</view>
 			<view class="userinfo-wrapper">
-				<image src="../../static/logo.png" class="userinfo-avatar"></image>
+				<image :src="detail.avatar" class="userinfo-avatar"></image>
 				<view class="userinfo-box">
 					<view class="userinfo-name">
-						<text>{{detail.user_name}}</text><text class="tag">百次好评</text>
+						<text>{{detail.username}}</text><text class="tag">百次好评</text>
 					</view>
 					<view class="userinfo-time">
 						<text>2分钟前来过</text>
 						<view class="middle-line">
 							|
 						</view>
-						<text>{{detail.user_address}}</text>
+						<text>{{detail.city}}</text>
 					</view>
 				</view>
 				<view class="userinfo-attention">

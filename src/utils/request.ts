@@ -1,13 +1,16 @@
 import appConfig from '@/config/app'
 const { HEADER, HEADERPARAMS, TOKENNAME, HTTP_REQUEST_URL } = appConfig
 import type { IResponse } from './type'
+import {
+	useUserStore
+} from '@/stores/user';
 
 type RequestOptionsMethod = 'GET' | 'POST'
 
 // 白名单，不需要携带token就允许被访问的接口
-const whiteApiList = ['/goods/list', '/goods/getGoodsById', '/user/getUserInfo']
+const whiteApiList = ['/goods/list', '/user/login', '/goods/getGoodsById']
 
-const token = ''
+
 
 export const interceptor = () => {
 
@@ -15,16 +18,14 @@ export const interceptor = () => {
 
 		// 请求拦截器
 		invoke(args) {
-
-			// 加载loading
-			// uni.showLoading({
-			// 	title: '加载中...'
-			// })
+			const user = useUserStore()
+			const token = user.token
 
 			// 当本地没有token，并且接口地址没在白名单内，一律跳转登录页面
 			if (!token && !whiteApiList.includes(args.url)) {
-				console.log('去登录页');
-				// uni.hideLoading()
+				uni.navigateTo({
+					url: '/pages/login/index'
+				})
 				return false
 			}
 			// request 触发前拼接 url
@@ -33,7 +34,7 @@ export const interceptor = () => {
 			//设置请求头及token
 			args.header = {
 				'content-type': args.method === 'POST' ? 'application/json' : 'application/x-www-form-urlencoded',
-				'Authori-zation': 'Bearer ' + token
+				'Authorization': token
 			}
 		},
 

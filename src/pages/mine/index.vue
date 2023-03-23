@@ -6,7 +6,7 @@
 		<view class="header-wrapper">
 			<image class="avatar" :src="userInfo.avatar" mode="widthFix"></image>
 			<view class="name">
-				{{userInfo.user_name}}
+				{{userInfo.nick_name}}
 				<view class="vip-name">
 					会员名：{{userInfo.vip_name}}
 				</view>
@@ -59,36 +59,30 @@
 		<view class="title">
 			我的交易
 		</view>
-		<uni-grid :column="4" :showBorder="false" :highlight="true" @change="handleTransactionChange">
-			<uni-grid-item v-for="(item, index) in transactionList" :index="index" :key="item.id">
-				<view class="grid-item-box" style="background-color: #fff;">
-					<uni-icons type="image" :size="30" color="#777" />
-					<text class="text">{{item.title}}</text>
-				</view>
-			</uni-grid-item>
-		</uni-grid>
+		<view class="gird">
+			<view class="grid-item-box" v-for="(item, index) in transactionList">
+				<uni-icons type="image" :size="30" color="#777" />
+				<text class="text">{{item.title}}</text>
+			</view>
+		</view>
 		<view class="title">
 			我的会玩
 		</view>
-		<uni-grid :column="4" :showBorder="false" :highlight="true" @change="handleTransactionChange">
-			<uni-grid-item v-for="(item, index) in playList" :index="index" :key="item.id">
-				<view class="grid-item-box" style="background-color: #fff;">
-					<uni-icons type="image" :size="30" color="#777" />
-					<text class="text">{{item.title}}</text>
-				</view>
-			</uni-grid-item>
-		</uni-grid>
+		<view class="gird">
+			<view class="grid-item-box" v-for="(item, index) in playList">
+				<uni-icons type="image" :size="30" color="#777" />
+				<text class="text">{{item.title}}</text>
+			</view>
+		</view>
 		<view class="title">
 			互动权益
 		</view>
-		<uni-grid :column="4" :showBorder="false" :highlight="true" @change="handleTransactionChange">
-			<uni-grid-item v-for="(item, index) in transactionList" :index="index" :key="item.id">
-				<view class="grid-item-box" style="background-color: #fff;">
-					<uni-icons type="image" :size="30" color="#777" />
-					<text class="text">{{item.title}}</text>
-				</view>
-			</uni-grid-item>
-		</uni-grid>
+		<view class="gird">
+			<view class="grid-item-box" v-for="(item, index) in interestList">
+				<uni-icons type="image" :size="30" color="#777" />
+				<text class="text">{{item.title}}</text>
+			</view>
+		</view>
 	</view>
 </template>
 
@@ -104,6 +98,9 @@
 	import type {
 		IUserInfo
 	} from '@/api/type'
+	import {
+		onShow
+	} from '@dcloudio/uni-app';
 	interface IData {
 		userInfo: IUserInfo,
 	}
@@ -134,6 +131,20 @@
 		id: 4,
 		title: '有奖活动'
 	}])
+	
+	const interestList = ref([{
+		id: 1,
+		title: '领咸鱼币'
+	}, {
+		id: 2,
+		title: '咸鱼农场'
+	}, {
+		id: 3,
+		title: '瓜分红包'
+	}, {
+		id: 4,
+		title: ''
+	}])
 
 	function handleTransactionChange(e: any) {
 		console.log(e.detail.index);
@@ -149,15 +160,19 @@
 		userInfo
 	} = toRefs(data)
 
-	getUser(1)
+	onShow(() => {
+		// console.log('onshow');
+		getUser()
+	})
 
-	async function getUser(id: number) {
+
+
+	async function getUser() {
 		const {
 			data
-		} = await getUserInfo({
-			id
-		})
+		} = await getUserInfo()
 		userInfo.value = data
+		// console.log(data);
 	}
 </script>
 
@@ -215,6 +230,11 @@
 		.title {
 			font-weight: bold;
 			padding-left: 40rpx;
+		}
+		
+		.gird{
+			display: flex;
+			padding: 40rpx 0;
 		}
 
 		.grid-item-box {

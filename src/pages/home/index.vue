@@ -8,7 +8,6 @@
 
 					</view>
 					<view class="header-search__text">
-
 					</view>
 					<view class="header-search__btn">搜索</view>
 				</view>
@@ -48,12 +47,12 @@
 								</text>
 							</view>
 							<view class="recommend-person-box">
-								<image src="../../static/image/avatar.jpg" class="recommend-avatar">
+								<image :src="item.avatar" class="recommend-avatar">
 								</image>
 								<view class="recommend-address">
-									{{item.user_address}}
+									{{item.city}}
 								</view>
-								<view class="recommend-credit">
+								<view class="recommend-credit" v-if="item.credit === 1">
 									芝麻信用极好
 								</view>
 							</view>
@@ -83,12 +82,12 @@
 								</text>
 							</view>
 							<view class="recommend-person-box">
-								<image src="../../static/image/avatar.jpg" class="recommend-avatar">
+								<image :src="item.avatar" class="recommend-avatar">
 								</image>
 								<view class="recommend-address">
-									{{item.user_address}}
+									{{item.city}}
 								</view>
-								<view class="recommend-credit">
+								<view class="recommend-credit" v-if="item.credit === 1">
 									芝麻信用极好
 								</view>
 							</view>
@@ -125,13 +124,14 @@
 	const topH = ref < number > (0)
 	const params = reactive({
 		currentPage: 1,
-		pageSize: 4
+		pageSize: 10
 	})
 	const mWaterfall = ref()
 
 	const loadingStatus = ref('loading')
 
 	onReady(() => {
+		console.log('onReady');
 		uni.getSystemInfo({
 			success(res) {
 				let titleH = uni.createSelectorQuery().select(".category-item")
@@ -143,6 +143,7 @@
 	})
 
 	onLoad(() => {
+		console.log("onLoad");
 		uni.startPullDownRefresh({
 			success: () => {
 				uni.showToast({
@@ -213,7 +214,6 @@
 		.main-wrapper {
 			width: 100%;
 			position: relative;
-			// padding-top: 20px;
 
 			.topbar-wrapper {
 				position: fixed;
