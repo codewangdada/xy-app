@@ -25,7 +25,7 @@
 			</view>
 			<waterfall v-model="listData" ref="mWaterfall">
 				<template #left={leftList}>
-					<view class="recommend-item" v-for="item in leftList" @click="goDetail(item.id)">
+					<view class="recommend-item" v-for="item in leftList" :key="item.id" @click="goDetail(item.id)">
 						<a class="recommend-img-wrapper">
 							<image class="recommend-img" mode="widthFix" :src="item.img"></image>
 						</a>
@@ -60,7 +60,7 @@
 					</view>
 				</template>
 				<template #right={rightList}>
-					<view class="recommend-item" v-for="item in rightList" @click="goDetail(item.id)">
+					<view class="recommend-item" v-for="item in rightList" :key="item.id" @click="goDetail(item.id)">
 						<a class="recommend-img-wrapper">
 							<image class="recommend-img" mode="widthFix" :src="item.img"></image>
 						</a>
@@ -103,6 +103,7 @@
 <script setup lang="ts">
 	import waterfall from '@/components/waterfall/index.vue'
 	import {
+		onMounted,
 		reactive,
 		ref
 	} from "vue";
@@ -113,7 +114,6 @@
 		IGoodsInfo
 	} from "@/api/type";
 	import {
-		onLoad,
 		onPullDownRefresh,
 		onReachBottom,
 		onReady
@@ -142,8 +142,8 @@
 		})
 	})
 
-	onLoad(() => {
-		console.log("onLoad");
+	onMounted(() => {
+		console.log("onMounted");
 		uni.startPullDownRefresh({
 			success: () => {
 				uni.showToast({

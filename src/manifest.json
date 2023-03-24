@@ -1,12 +1,16 @@
 {
-    "name" : "",
-    "appid" : "",
+    "name" : "xy",
+    "appid" : "__UNI__88FCA33",
     "description" : "",
     "versionName" : "1.0.0",
     "versionCode" : "100",
     "transformPx" : false,
     /* 5+App特有相关 */
     "app-plus" : {
+		"compatible": {
+			"runtimeVersion": "3.7.8", //根据实际情况填写  
+			"compilerVersion": "3.6.16" //根据实际情况填写  
+		},
         "usingComponents" : true,
         "nvueStyleCompiler" : "uni-app",
         "compilerVersion" : 3,
@@ -41,16 +45,20 @@
                 ]
             },
             /* ios打包配置 */
-            "ios" : {},
+            "ios" : {
+                "dSYMs" : false
+            },
             /* SDK配置 */
-            "sdkConfigs" : {}
+            "sdkConfigs" : {
+                "ad" : {}
+            }
         }
     },
     /* 快应用特有相关 */
     "quickapp" : {},
     /* 小程序特有相关 */
     "mp-weixin" : {
-        "appid" : "",
+        "appid" : "wx1cb4a87f94f5106a",
         "setting" : {
             "urlCheck" : false
         },
@@ -65,8 +73,8 @@
     "mp-toutiao" : {
         "usingComponents" : true
     },
-    "uniStatistics": {  
-        "enable": false
+    "uniStatistics" : {
+        "enable" : false
     },
     "vueVersion" : "3"
 }

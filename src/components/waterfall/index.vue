@@ -14,11 +14,14 @@
 		ref,
 		onMounted,
 		computed,
-		watch
+		watch,
+		getCurrentInstance
 	} from 'vue';
+	import { getRect } from '@/utils/common'
 	defineExpose({
 		clear
 	})
+	const currentInstance = getCurrentInstance()
 	const emit = defineEmits(['update:modelValue'])
 	const props = defineProps({
 		modelValue: {
@@ -62,24 +65,17 @@
 	onMounted(() => {
 		tempList.value = cloneData(copyFlowList.value)
 	})
-
-
-	function getRect(select: string) {
-		return new Promise((resolve, reject) => {
-			uni.createSelectorQuery().select(select).boundingClientRect((data) => {
-				resolve(data)
-			}).exec()
-		})
-	}
+	
 	async function splitData() {
 		if (!tempList.value.length) return;
-		let leftRect = await getRect('#left-column');
-		let rightRect = await getRect('#right-column');
+		let leftRect = await getRect('#left-column', currentInstance);
+		let rightRect = await getRect('#right-column', currentInstance);
 		// 如果左边小于或等于右边，就添加到左边，否则添加到右边
 		let item = tempList.value[0];
 		// 解决多次快速上拉后，可能数据会乱的问题，因为经过上面的两个await节点查询阻塞一定时间，加上后面的定时器干扰
 		// 数组可能变成[]，导致此item值可能为undefined
 		if (!item) return;
+		// console.log(leftRect, rightRect);
 		if (leftRect.height < rightRect.height) {
 			leftList.value.push(item);
 		} else if (leftRect.height > rightRect.height) {

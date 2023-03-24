@@ -29,8 +29,8 @@
 	} from '@/api/user'
 	const data = reactive({
 		formData: {
-			username: '',
-			password: ''
+			username: '13676440989',
+			password: '123456'
 		},
 		rules: {
 			username: {
