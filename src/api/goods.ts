@@ -1,10 +1,10 @@
 import { get } from '@/utils/request'
-import type { IPage, IGoodsInfo, BaseList } from './type'
+import type { IPage, IGoodsInfo } from './type'
 
 
 
 export function getGoodsList(data?: IPage) {
-	return get<BaseList<IGoodsInfo>>('/goods/list', data)
+	return get<Array<IGoodsInfo>>('/goods/list', data)
 }
 
 export function getGoodsDetail(data: any) {

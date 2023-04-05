@@ -1,7 +1,7 @@
 <template>
 	<view class="content">
 		<view class="setting-wrapper">
-			<uni-icons type="gear" size="30"></uni-icons>
+			<uni-icons type="gear" size="30" @click="goSetting"></uni-icons>
 		</view>
 		<view class="header-wrapper">
 			<image class="avatar" :src="userInfo.avatar" mode="widthFix"></image>
@@ -87,14 +87,15 @@
 </template>
 
 <script setup lang="ts">
-	import {
-		getUserInfo
-	} from '@/api/user'
+
 	import {
 		ref,
 		reactive,
 		toRefs
 	} from "vue";
+	import {
+		useUserStore
+	} from '@/stores/user';
 	import type {
 		IUserInfo
 	} from '@/api/type'
@@ -151,29 +152,19 @@
 	}
 
 
-
-	const data = reactive < IData > ({
-		userInfo: {}
-	})
-
-	const {
-		userInfo
-	} = toRefs(data)
-
+	const user = useUserStore()
+	
+	const {userInfo} = toRefs(user)
+	
 	onShow(() => {
-		// console.log('onshow');
-		getUser()
+
 	})
 
-
-
-	async function getUser() {
-		const {
-			data
-		} = await getUserInfo()
-		userInfo.value = data
-		// console.log(data);
-	}
+const goSetting = () => {
+	uni.navigateTo({
+		url: '/pages/setting/index'
+	})
+}
 </script>
 
 <style lang="scss" scoped>

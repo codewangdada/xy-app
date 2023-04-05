@@ -25,6 +25,9 @@
 		useUserStore
 	} from '@/stores/user';
 	import {
+		getUserInfo
+	} from '@/api/user'
+	import {
 		passwordLogin
 	} from '@/api/user'
 	const data = reactive({
@@ -56,25 +59,29 @@
 	} = toRefs(data)
 	const form = ref()
 
-	function submit(form: any) {
+	function submit(form : any) {
 		form.validate().then(async res => {
 			const {
-				status,
-				token,
-				message
+				data,
+				msg
 			} = await passwordLogin(res)
-			if (status === 0) {
-				user.setToken(token)
-				// console.log(user);
-				uni.switchTab({
-					url: '/pages/home/index'
-				})
-			} else {
-				uni.showToast({
-					title: message,
-					icon: 'none'
-				})
+			user.setToken(data)
+			const info = await getUserInfo()
+			user.userInfo = info.data
+			const ws = {
+				type: 'user',
+				id: info.data?.id
 			}
+			uni.sendSocketMessage({
+				data: JSON.stringify(ws)
+			})
+			uni.showToast({
+				title: '登录成功',
+				icon: 'none'
+			})
+			uni.switchTab({
+				url: '/pages/home/index'
+			})
 		}).catch(err => {
 			console.log(err);
 		})

@@ -4,6 +4,7 @@ import type { IResponse } from './type'
 import {
 	useUserStore
 } from '@/stores/user';
+import errorCode from './errorCode';
 
 type RequestOptionsMethod = 'GET' | 'POST'
 
@@ -40,8 +41,20 @@ export const interceptor = () => {
 
 		// 响应拦截器，可以对数据进行预处理
 		success(args) {
-			// uni.hideLoading()
-
+			const code = args.data.code || 200;
+			const msg = errorCode[code] || args.data.msg || errorCode['default']
+			if (code === 401) {
+				console.log('重新登录');
+				return
+			}
+			if (code === 500) {
+				uni.showToast({
+					title: msg,
+					icon:'none'
+				})
+				return Promise.reject(args.data);
+			}
+			return Promise.resolve(args.data)
 		},
 		fail(err) {
 			console.log('interceptor-fail', err)
@@ -54,27 +67,26 @@ export const interceptor = () => {
 	})
 }
 
-const promise = <T>(url: string, data: any = {}, method: RequestOptionsMethod) => {
+const promise = <T>(url : string, data : any = {}, method : RequestOptionsMethod) => {
 	return new Promise<IResponse<T>>((resolve, reject) => {
 		uni.request({
 			url,
 			method,
 			data,
-			success: (res: any) => {
-				if (res.statusCode === 200) {
-					resolve(res.data)
-				} else {
-					reject(res)
-				}
+			success: (res : any) => {
+				resolve(res)
+			},
+			fail: (err) => {
+				console.log('fail');
 			}
 		})
 	})
 }
 
-export const get = <T>(url: string, data: any = {}) => {
+export const get = <T>(url : string, data : any = {}) => {
 	return promise<T>(url, data, 'GET')
 }
 
-export const post = <T>(url: string, data: any = {}) => {
+export const post = <T>(url : string, data : any = {}) => {
 	return promise<T>(url, data, 'POST')
 }

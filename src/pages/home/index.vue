@@ -186,17 +186,14 @@
 	async function getList() {
 		loadingStatus.value = 'loading'
 		const {
-			data
+			data,
+			total
 		} = await getGoodsList({
 			currentPage: params.currentPage,
 			pageSize: params.pageSize,
 		})
-		const {
-			records,
-			total
-		} = data
 		loadingStatus.value = 'more'
-		listData.value = listData.value.concat(records)
+		listData.value = listData.value.concat(data)
 		count.value = total
 	}
 </script>

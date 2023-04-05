@@ -21,21 +21,36 @@
 			"path": "pages/play/index"
 		},
 		{
-			"path": "pages/message/index"
+			"path": "pages/message/index",
+			"style": {
+				"enablePullDownRefresh": true
+			}
 		},
 		{
 			"path": "pages/mine/index"
 		},
 		{
 			"path": "pages/detail/index"
+		},
+		{
+			"path": "pages/message/message-detail/index",
+			"style": {
+				"navigationStyle": "default",
+				"navigationBarTitleText": "会话详情"
+			}
+		},
+		{
+			"path": "pages/setting/index",
+			"style": {
+				"navigationStyle": "default",
+				"navigationBarTitleText": "设置"
+			}
 		}
-
 	],
 	"tabBar": {
 		"color": "#cdcdcd",
 		"selectedColor": "#2c2c2c",
-		"list": [
-			{
+		"list": [{
 				"pagePath": "pages/home/index",
 				"iconPath": "static/image/icon_home.png",
 				"selectedIconPath": "static/image/ic_home_HL.png",
@@ -66,7 +81,6 @@
 		"navigationBarTextStyle": "black",
 		"navigationBarTitleText": "",
 		"navigationBarBackgroundColor": "#F8F8F8",
-		"backgroundColor": "#F8F8F8",
 		"app-plus": {
 			"bounce": "none",
 			"scrollIndicator": "none"

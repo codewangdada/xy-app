@@ -1,7 +1,6 @@
 export interface IResponse<T = any> {
-	code?: number;
-	status?: number;
-	message: string;
-	data: T;
-	token?: string;
+	code: number;
+	msg: string;
+	data?: T;
+	total? : number
 }

@@ -31,7 +31,7 @@
 				<view class="footer-btn btn">
 					卖同款
 				</view>
-				<view class="footer-btn">
+				<view class="footer-btn" @click="handleWant(detail)">
 					我想要
 				</view>
 			</view>
@@ -104,14 +104,17 @@
 		IGoodsInfo
 	} from '@/api/type'
 	import {
+		createChatGroup
+	} from '@/api/chat'
+	import {
 		onLoad
 	} from "@dcloudio/uni-app";
 
 	interface IData {
-		detail: IGoodsInfo,
+		detail : IGoodsInfo,
 	}
 
-	const data = reactive < IData > ({
+	const data = reactive<IData>({
 		detail: {}
 	})
 
@@ -120,9 +123,14 @@
 	} = toRefs(data)
 
 
+	const handleWant = async ({ user_id, avatar, nick_name }) => {
+		const { data } = await createChatGroup({ userId: user_id })
+		uni.navigateTo({
+			url: `/pages/message/message-detail/index?chatId=${data}&receiveId=${user_id}&receiveAvatar=${avatar}&receiveName=${nick_name}`
+		})
+	}
 
-
-	async function getDetail(id: number) {
+	async function getDetail(id : number) {
 		const {
 			data
 		} = await getGoodsDetail({
@@ -137,7 +145,7 @@
 		});
 	}
 
-	function handlePreview(img: string) {
+	function handlePreview(img : string) {
 		uni.previewImage({
 			urls: [img]
 		})
