@@ -18,7 +18,14 @@
 			}
 		},
 		{
-			"path": "pages/play/index"
+			"path": "pages/play/index",
+			"style": {
+				"enablePullDownRefresh": true,
+				"onReachBottomDistance": 50
+			}
+		},
+		{
+			"path": "pages/play/play-detail/index"
 		},
 		{
 			"path": "pages/message/index",
@@ -27,7 +34,10 @@
 			}
 		},
 		{
-			"path": "pages/mine/index"
+			"path": "pages/mine/index",
+			"style": {
+				"enablePullDownRefresh": true
+			}
 		},
 		{
 			"path": "pages/detail/index"
@@ -44,6 +54,22 @@
 			"style": {
 				"navigationStyle": "default",
 				"navigationBarTitleText": "设置"
+			}
+		},
+		{
+			"path": "uni_modules/rt-uni-update/components/rt-uni-update/rt-uni-update",
+			"style": {
+				"disableScroll": true,
+				"app-plus": {
+					"backgroundColorTop": "transparent",
+					"background": "transparent",
+					"titleNView": false,
+					"scrollIndicator": false,
+					"popGesture": "none",
+					"animationType": "fade-in",
+					"animationDuration": 200
+
+				}
 			}
 		}
 	],

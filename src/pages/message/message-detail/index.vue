@@ -17,7 +17,7 @@
 				</image>
 			</view>
 		</view>
-		<view class="footer">
+		<view class="message-footer">
 			<image src="../../../static/icon/ic_record.png" class="icon" @click="goBottom"></image>
 			<input v-model="msg" class="footer-input">
 			<image src="../../../static/icon/ic_face.png" class="icon"></image>
@@ -149,7 +149,7 @@
 		word-break: break-all;
 	}
 
-	.footer {
+	.message-footer {
 		width: 100%;
 		background-color: rgb(247, 247, 247);
 		display: flex;

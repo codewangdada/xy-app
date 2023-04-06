@@ -119,9 +119,9 @@
 		onReady
 	} from "@dcloudio/uni-app";
 
-	const listData = ref < IGoodsInfo[] > ([])
-	const count = ref < number > (0)
-	const topH = ref < number > (0)
+	const listData = ref<IGoodsInfo[]>([])
+	const count = ref<number>(0)
+	const topH = ref<number>(0)
 	const params = reactive({
 		currentPage: 1,
 		pageSize: 10
@@ -177,7 +177,7 @@
 		})
 	}
 
-	function goDetail(id: number) {
+	function goDetail(id : number) {
 		uni.navigateTo({
 			url: `/pages/detail/index?id=${id}`
 		})
@@ -305,7 +305,7 @@
 
 					.recommend-img {
 						width: 100%;
-
+						border-radius: 20rpx;
 					}
 				}
 

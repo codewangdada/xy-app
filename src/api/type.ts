@@ -34,3 +34,16 @@ export interface IChatInfo {
 	time : string,
 	avatar : string
 }
+
+export interface IPostInfo {
+	address?: string, 
+	avatar?: string,
+	collect?: number,
+	content?: string,
+	id?: number,
+	imgs?: string,
+	like?: number,
+	nick_name?: string,
+	time?: string,
+	user_id?: number
+}

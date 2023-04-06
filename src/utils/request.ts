@@ -9,7 +9,7 @@ import errorCode from './errorCode';
 type RequestOptionsMethod = 'GET' | 'POST'
 
 // 白名单，不需要携带token就允许被访问的接口
-const whiteApiList = ['/goods/list', '/user/login', '/goods/getGoodsById']
+const whiteApiList = ['/goods/list', '/user/login', '/goods/getGoodsById', '/base/getVersion']
 
 
 
@@ -50,7 +50,7 @@ export const interceptor = () => {
 			if (code === 500) {
 				uni.showToast({
 					title: msg,
-					icon:'none'
+					icon: 'none'
 				})
 				return Promise.reject(args.data);
 			}

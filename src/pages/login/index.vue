@@ -1,5 +1,5 @@
 <template>
-	<view class="content">
+	<view class="page-container">
 		<image src="../../static/logo.png" class="logo"></image>
 		<uni-forms class="form" ref="form" :rules="rules" border :modelValue="formData">
 			<uni-forms-item name="username">
@@ -95,7 +95,7 @@
 		border-radius: 50rpx;
 	}
 
-	.content {
+	.page-container {
 		padding: 60rpx;
 		display: flex;
 		flex-direction: column;

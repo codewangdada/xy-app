@@ -7,6 +7,7 @@
 	const user = useUserStore()
 	const logout = () => {
 		user.token = '',
+		uni.clearStorageSync()
 		uni.navigateTo({
 			url:'/pages/login/index'
 		})

@@ -6,6 +6,8 @@ import {
 	useChatStore
 } from '@/stores/chat';
 
+import './common.scss'
+
 
 export function createApp() {
 	const app = createSSRApp(App);
