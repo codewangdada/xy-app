@@ -1,5 +1,5 @@
 <template>
-	<view class="waterfall">
+	<view class="waterfall" :style="{padding: warpPadding + 'px'}">
 		<view id="left-column" class="column">
 			<slot name="left" :leftList="leftList"></slot>
 		</view>
@@ -24,6 +24,10 @@
 	const currentInstance = getCurrentInstance()
 	const emit = defineEmits(['update:modelValue'])
 	const props = defineProps({
+		warpPadding: {
+			type: Number,
+			default: 10
+		},
 		modelValue: {
 			// 瀑布流数据
 			type: Array,
@@ -159,7 +163,7 @@
 <style lang="scss" scoped>
 	.waterfall {
 		display: flex;
-		padding: 0 20rpx;
+		// padding: 0 20rpx;
 		flex-direction: row;
 		align-items: flex-start;
 

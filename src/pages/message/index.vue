@@ -27,7 +27,7 @@
 	import {
 		useUserStore
 	} from '@/stores/user';
-	import { onPullDownRefresh } from '@dcloudio/uni-app';
+	import { onPullDownRefresh, onShow } from '@dcloudio/uni-app';
 	const user = useUserStore()
 	const list = ref([])
 	const format = (time) => {
@@ -45,7 +45,11 @@
 			}
 		})
 	}
-	getList()
+	
+	onShow(() => {
+		getList()
+	})
+	
 	onPullDownRefresh(() => {
 		getList()
 		uni.stopPullDownRefresh()

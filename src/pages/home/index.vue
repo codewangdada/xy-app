@@ -13,7 +13,59 @@
 				</view>
 			</view>
 			<view class="gonge-wrapper">
+				<view class="gonge-item">
+					咸鱼集市
+					<view class="gong-wrapper">
+						<view class="gong">
+							<image src="../../static/logo.png" class="gong-img"></image>
+							<view class="gong-text">
+								手机严选
+							</view>
+						</view>
+						<view class="gong">
+							<image src="../../static/logo.png" class="gong-img"></image>
+							<view class="gong-text">
+								保真奢侈
+							</view>
+						</view>
+						<view class="gong">
+							<image src="../../static/logo.png" class="gong-img"></image>
+							<view class="gong-text">
+								文玩珠宝
+							</view>
+						</view>
+						<view class="gong">
+							<image src="../../static/logo.png" class="gong-img"></image>
+							<view class="gong-text">
+								限量潮品
+							</view>
+						</view>
+					</view>
 
+				</view>
+				<view class="gonge-item">
+					<view>
+						旧物换礼
+						<view class="gong-wrapper">
+							<view class="gong">
+								<image src="../../static/logo.png" class="gong-img"></image>
+								<view class="gong-text">
+									仅剩26件
+								</view>
+							</view>
+							<view class="gong">
+								<image src="../../static/logo.png" class="gong-img"></image>
+								<view class="gong-text">
+									842已换
+								</view>
+							</view>
+						</view>
+					</view>
+					<view class="gong-right">
+						高价回收
+						<image src="../../static/logo.png" class="gong-right-img"></image>
+					</view>
+				</view>
 			</view>
 			<view class="category-wrapper">
 				<view class="category-item" @click="goTop">
@@ -23,7 +75,7 @@
 					最新发布
 				</view>
 			</view>
-			<waterfall v-model="listData" ref="mWaterfall">
+			<waterfall v-model="listData" ref="mWaterfall" :add-time="50">
 				<template #left={leftList}>
 					<view class="recommend-item" v-for="item in leftList" :key="item.id" @click="goDetail(item.id)">
 						<a class="recommend-img-wrapper">
@@ -262,14 +314,53 @@
 			}
 
 			.gonge-wrapper {
-				position: relative;
-				width: 670rpx;
-				height: 300rpx;
-				margin: 12rpx 40rpx 0 40rpx;
-				border-radius: 24rpx;
-				background-color: #eee;
-				flex-wrap: wrap;
-				overflow: hidden;
+				display: flex;
+				padding: 30rpx;
+
+				.gonge-item {
+					flex: 1;
+					background: #eee;
+					border-radius: 10rpx;
+					padding: 10rpx;
+					margin: 10rpx;
+
+					.gong-wrapper {
+						display: flex;
+						flex-wrap: wrap;
+						justify-content: space-between;
+
+						.gong {
+							margin: 30rpx;
+							display: flex;
+							flex-direction: column;
+							align-items: center;
+							
+							
+
+							.gong-img {
+								width: 80rpx;
+								height: 80rpx;
+							}
+
+							.gong-text {
+								font-size: 20rpx;
+							}
+						}
+					}
+
+					.gong-right {
+						margin-top: 40rpx;
+						display: flex;
+						align-items: center;
+						justify-content: space-between;
+						.gong-right-img {
+							width: 80rpx;
+							height: 80rpx;
+							margin-right: 30rpx;
+						}
+					}
+
+				}
 			}
 
 			.category-wrapper {
@@ -282,7 +373,7 @@
 
 				.category-item {
 					background-color: $color;
-					width: 160rpx;
+					font-size: 20rpx;
 					padding: 10rpx 20rpx;
 					border-radius: 40rpx;
 					margin-right: 10rpx;
@@ -299,7 +390,7 @@
 				display: flex;
 				flex-direction: column;
 				background: #fff;
-				padding: 0 20rpx 40rpx;
+				padding: 10px;
 
 				.recommend-img-wrapper {
 

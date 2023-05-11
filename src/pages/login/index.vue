@@ -1,6 +1,9 @@
 <template>
 	<view class="page-container">
 		<image src="../../static/logo.png" class="logo"></image>
+		<view class="name">
+			咸鱼
+		</view>
 		<uni-forms class="form" ref="form" :rules="rules" border :modelValue="formData">
 			<uni-forms-item name="username">
 				<uni-easyinput v-model="formData.username" :input-border="false" placeholder="请输入手机号码" />
@@ -32,8 +35,8 @@
 	} from '@/api/user'
 	const data = reactive({
 		formData: {
-			username: '13676440989',
-			password: '123456'
+			username: '',
+			password: ''
 		},
 		rules: {
 			username: {
@@ -96,15 +99,19 @@
 	}
 
 	.page-container {
-		padding: 60rpx;
+		padding: 120rpx;
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		width: 100%;
 		box-sizing: border-box;
-
+		.name {
+			margin-top: 10rpx;
+		}
+		
 		.form {
 			width: 100%;
+			margin-top: 100rpx;
 		}
 
 		.btn {

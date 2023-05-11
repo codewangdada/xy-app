@@ -93,15 +93,12 @@
 		toRefs
 	} from "vue";
 	import {
-		useUserStore
-	} from '@/stores/user';
-	import {
 		getUserInfo
 	} from '@/api/user'
 	import type {
 		IUserInfo
 	} from '@/api/type'
-	import { onPullDownRefresh } from '@dcloudio/uni-app';
+	import { onPullDownRefresh, onShow } from '@dcloudio/uni-app';
 	interface IData {
 		userInfo : IUserInfo,
 	}
@@ -147,15 +144,10 @@
 		title: ''
 	}])
 
-	function handleTransactionChange(e : any) {
-		console.log(e.detail.index);
-	}
-
-
-	const data = reactive({
+	const data = reactive<IData>({
 		userInfo: {}
 	})
-
+	
 	const { userInfo } = toRefs(data)
 
 	const getInfo = async () => {
@@ -163,7 +155,9 @@
 		userInfo.value = data
 	}
 
-	getInfo()
+	onShow(() => {
+		getInfo()
+	})
 
 	onPullDownRefresh(() => {
 		getInfo()

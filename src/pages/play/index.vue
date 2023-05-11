@@ -9,7 +9,7 @@
 		<view class="category-wrapper">
 
 		</view>
-		<waterfall v-model="listData" ref="mWaterfall">
+		<waterfall v-model="listData" ref="mWaterfall" :warp-padding="5" :add-time="50">
 			<template #left={leftList}>
 				<view v-for="item in leftList" class="post-item" @click="goDetail(item.id)">
 					<image class="post-img" :src="item.imgs" mode="widthFix" />
@@ -140,7 +140,7 @@
 		// }
 
 		.post-item {
-			padding: 0 20rpx 40rpx;
+			padding: 5px;
 
 			.post-img {
 				width: 100%;
